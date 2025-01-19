@@ -6,6 +6,8 @@ import About from "./components/About/About.jsx";
 import Contact from "./components/Contact/Contact.jsx";
 import Users from "./components/Users/Users.jsx";
 import UserDetails from "./components/UserDetails/UserDetails.jsx";
+import Posts from "./components/Posts/Posts.jsx";
+import PostDetails from "./components/PostDetails/PostDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,34 @@ const router = createBrowserRouter([
             `https://jsonplaceholder.typicode.com/users/${params.userId}`
           );
           // console.log(params);
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user");
+          }
+          return response.json();
+        },
+      },
+      {
+        path: "/posts",
+        loader: async () => {
+          const response = await fetch(
+            `https://jsonplaceholder.typicode.com/posts`
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+          }
+          return response.json();
+        },
+        element: <Posts></Posts>,
+      },
+      {
+        path: "/post/:postId",
+        element: <PostDetails></PostDetails>,
+        loader: async ({ params }) => {
+          const response = await fetch(
+            `https://jsonplaceholder.typicode.com/posts/${params.postId}`
+          );
 
           if (!response.ok) {
             throw new Error("Failed to fetch user");
